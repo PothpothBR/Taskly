@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    Dashboard
+{% endblock %}
+
+ {% block body %}
+   <div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="card p-4" style="width: 100%; max-width: 95%;">
+
+        <h1>Dashboard</h1>
+        <a href="{{ url_for('logout') }}"><button type="button" class="btn btn-outline-danger">Logout</button></a>
+
+        <hr>
+        <h3>Todas as Tasks</h3>
+
+        <ul>
+            {% for task in all_tasks %}
+                <li>{{ task.title }} - {{ task.assignee }} - {{ task.task_date }} - {{ task.desc }}</li>
+            {% endfor %}
+        </ul>
+
+
+        <a href="{{ url_for('create_task') }}"> <button type="button" class="btn btn-primary">Criar Nova Task</button> </a>
+        <hr>
+
+        <h3>Suas Tasks...</h3>
+        <table>
+            <tr>
+                <th>Titulo</th>
+                <th>Responsável</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Ações</th>
+            </tr>
+            {% for task in my_tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.assignee }}</td>
+                    <td>{{ task.task_date }}</td>
+                    <td>{{ task.desc }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_task', id=task.id) }}"><button type="button" class="btn btn-outline-warning">Editar</button></a>
+                        <form action="{{ url_for('delete_task', id=task.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Você tem certeza que deseja excluir?')" class="btn btn-outline-danger">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+   </div>
+
+{% endblock %}
