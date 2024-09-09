@@ -24,6 +24,10 @@
             {{ form.task_assignee(class="form-control", placeholder="Responsável...") }}
 
             <br>
+            {{ form.task_status.label(class="form-label") }}
+            {{ form.task_status(class="form-control", placeholder="Status...") }}
+
+            <br>
             {{ form.task_date.label(class="form-label") }}
             {{ form.task_date(class="form-control") }}
 

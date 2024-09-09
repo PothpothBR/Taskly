@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for
 from config import app, db
-from models import load_user, User, Task
+from models import User, Task
 from flask_login import login_required, login_user, logout_user, current_user
 from forms import RegisterForm, LoginForm, TaskForm
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -18,7 +18,6 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         psswd = generate_password_hash(form.password.data)
-        # print(f'{usu} - {sen}')
 
         user = User.query.filter_by(username=username).first()
         if user:
@@ -64,6 +63,7 @@ def add_assignee(t: Task):
         'title': t.title,
         'task_date': t.task_date,
         'desc': t.desc,
+        'status': t.status,
         'user_id': t.user_id,
         'assignee_id': t.assignee_id,
         'assignee': assignee.username,
@@ -85,6 +85,7 @@ def create_task():
 
     form = TaskForm()
     form.task_assignee.choices = list(map(lambda u: (u.id, u.username), User.query.all()))
+    form.task_status.choices = ["Pendente", "Em Andamento", "Concluida"]
 
     if form.validate_on_submit():
         taskname = form.task_title.data
@@ -102,8 +103,9 @@ def create_task():
             task_date = form.task_date.data
             desc = form.description.data
             assignee_id = assignee.id
+            status = form.task_status.data
             user_id = current_user.id
-            newTask = Task(title=title, assignee_id=assignee_id, task_date=task_date, desc=desc, user_id=user_id)
+            newTask = Task(title=title, assignee_id=assignee_id, status=status, task_date=task_date, desc=desc, user_id=user_id)
             db.session.add(newTask)
             db.session.commit()
             return redirect(url_for('dashboard'))
@@ -116,6 +118,7 @@ def create_task():
 def edit_task(id):
     form = TaskForm()
     form.task_assignee.choices = list(map(lambda u: (u.id, u.username), User.query.all()))
+    form.task_status.choices = ["Pendente", "Em Andamento", "Concluida"]
     form.submit.label.text = 'Editar Task'
 
     if form.validate_on_submit():
@@ -149,8 +152,3 @@ def delete_task(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-"""
-pip install flask, flask-wtf, 
-flask_sqlalchemy, flask_login
-"""

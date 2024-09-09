@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
 from config import db, login_manager
 
 
@@ -21,5 +19,6 @@ class Task(db.Model):
     title = db.Column(db.String, nullable=False)
     task_date = db.Column(db.Date, nullable=False)
     desc = db.Column(db.String, nullable=False)
+    status = db.Column(db.String, nullable=False)
     assignee_id = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

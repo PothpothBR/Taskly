@@ -18,6 +18,7 @@ class LoginForm(FlaskForm):
 class TaskForm(FlaskForm):
     task_title = StringField('Titulo da Task', validators=[DataRequired()])
     task_assignee = SelectField('Responsavel', coerce=str, validators=[DataRequired()])
+    task_status = SelectField('Status', coerce=str, validators=[DataRequired()])
     task_date = DateField('Data da Task', format='%Y-%m-%d', validators=[DataRequired()])
     description = TextAreaField('Descrição', validators=[DataRequired()])
     submit = SubmitField('Criar Task')
