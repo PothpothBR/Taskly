@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
